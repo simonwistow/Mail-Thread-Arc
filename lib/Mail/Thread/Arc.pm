@@ -81,6 +81,8 @@ sub render {
         $self->message_offsets( { map { $_ => ++$i } @messages } );
     }
     $self->svg->script->CDATA( $self->javascript_chunk );
+    $self->svg->title->cdata( $root->header('subject') );
+    $self->svg->desc->cdata( $root->header('subject') );
 
     $self->draw_arc( $_->parent, $_ ) for @messages;
     $self->draw_message( $_ ) for @messages;
