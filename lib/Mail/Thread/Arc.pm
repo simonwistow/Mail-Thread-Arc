@@ -181,8 +181,10 @@ sub draw_arc {
         $path = "M $x,$y a$radius,$radius 0 1,$top $distance,0";
     }
 
+    my $f = $offsets{ $from } || 1;
+    my $t = $offsets{ $to }   || 1;
     my $group = $self->svg->group(
-        id => "road$offsets{ $from }-$offsets{ $to }",
+        id => "road$f-$t",
         $self->arc_style( $from, $to )
        );
     $group->path( d  => $path );
@@ -248,7 +250,8 @@ returns the X co-ordinate for a message
 
 sub message_x {
     my ($self, $message) = @_;
-    return $self->message_offsets->{ $message } * $self->message_radius * 3;
+    
+    return ($self->message_offsets->{ $message } || 1) * $self->message_radius * 3;
 }
 
 =head2 message_y
@@ -312,6 +315,8 @@ END
         my @path = $id - 1;
         while ($message) {
             last unless $message->parent;
+            last unless $offset{ $message->parent };
+            last unless $offset{ $message };
             push @path, $offset{ $message->parent } - 1,
               "'$offset{ $message->parent }-$offset{ $message }'";
             $message = $message->parent;
