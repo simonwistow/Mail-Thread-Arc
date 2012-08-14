@@ -109,6 +109,7 @@ sub draw_message {
     my $group = $root->group(
         id          => "road$i",
         onmouseover => "set_group_color( $i, 'blue' )",
+        onmouseout => "set_group_color( $i, 'red' )",
         $self->message_style( $message ),
        );
 
@@ -300,7 +301,7 @@ var groups = new Array();
 var last_group;
 
 function init(e) {
-    SVGDoc = e.getTarget().getOwnerDocument();
+    SVGDoc = e.target.ownerDocument;
 END
 
     # just what groups do we manage?
